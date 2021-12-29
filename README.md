@@ -1,8 +1,12 @@
 # Process_Scheduler
 A C++ process scheduler project using predefined processes and queue structs 
 
-This Process Scheduler was built and runs on the Linux Build of Code::Blocks v20.03 using g++ compiler and 
+This Process Scheduler was built and runs on the Linux build of Code::Blocks v20.03 using g++ compiler and 
 C++11 ISO C++ language standard compiler flag.
+
+To run this in Code::Blocks, create a New Project -> Console Application -> C++ -> Name the project and select
+a location for the project -> Select GNU GCC compiler -> Finish -> remove "main.cpp" from project with right
+click menu -> Drop files into the new project folder -> Delete old "main.cpp" file ->Build and Run.
 
 This was a project for Fall 2021 semester in COP4610 Operating Systems class at FAU.
 
