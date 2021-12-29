@@ -6,7 +6,7 @@ C++11 ISO C++ language standard compiler flag.
 
 To run this in Code::Blocks, create a New Project -> Console Application -> C++ -> Name the project and select
 a location for the project -> Select GNU GCC compiler -> Finish -> remove "main.cpp" from project with right
-click menu -> Drop files into the new project folder -> Delete old "main.cpp" file ->Build and Run.
+click menu -> Drop files into the new project folder -> Delete old "main.cpp" file -> Build and Run.
 
 This was a project for Fall 2021 semester in COP4610 Operating Systems class at FAU.
 
