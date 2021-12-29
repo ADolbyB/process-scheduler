@@ -1,7 +1,8 @@
 # Process_Scheduler
 A C++ process scheduler project using predefined processes and queue structs 
 
-This Process Scheduler was built and runs on the Linux Build of Code::Blocks v20.03 using g++ compiler.
+This Process Scheduler was built and runs on the Linux Build of Code::Blocks v20.03 using g++ compiler and 
+C++11 ISO C++ language standard compiler flag.
 
 This was a project for Fall 2021 semester in COP4610 Operating Systems class at FAU.
 
