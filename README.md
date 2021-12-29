@@ -16,23 +16,27 @@ This project provides three different scheduling algorithms, which are selectabl
     a) This algorithm uses a single Ready Queue and a single IO Queue.
     b) Each process in the ready queue is run by the CPU in the order it was received until it completes 
         its CPU burst. 
-    c) This queue is non-preemptive.
+    c) This scheduling algorithm is non-preemptive.
 2) SJF: Shortest Job First: 
     a) This algorithm uses a single Ready Queue and a single IO Queue.
     b) Since each process is predefined, as processes enter the ready queue, they are ordered with the 
         shortest CPU burst in the front of the queue. 
     c) All processes run until their CPU burst is completed.
-    d) This queue is non-preemptive.
+    d) This scheduling algorithm is non-preemptive.
 3) MLFQ: Multi-Level Feedback Queue:
     a) This algorithm uses three Ready Queues and one IO queue.
     b) The Ready Queues use separate priorities and separate algorithms. The highest level Ready Queue uses
-        a 5 time quantum (Tq) Round Robin scheme, the second level ready queue uses a 10 Tq Round Round scheme, 
-        the third Ready queue uses an FCFS algorithm. 
-    c) This is a pre-emptive algorithm.
+        a 5 time quantum (Tq) Round Robin scheme, the second level Ready Queue uses a 10 Tq Round Round scheme, 
+        the third Ready Queue uses an FCFS algorithm. 
+    c) This is a pre-emptive scheduling algorithm.
     d) Any process which does not finish its CPU burst in the 1st queue gets moved to the 2nd queue. The 2nd queue
         does not run until the 1st is empty. Any process which does not finish its CPU burst in the 2nd queue gets
         moved to the 3rd queue. The 3rd queue does not run until the 1st and 2nd queues are empty.
     e) All processes returning from IO are placed in the 1st queue.
     f) Any process running in a lower queue will be preempted by a process arriving in a higher queue, then resume
         its CPU burst when the higher queue(s) are empty.
-    
+
+Notes for all algorithms:
+    1) All processes finishing CPU bursts from any queue are sent to the back of the IO queue, unless the process is finished.
+    2) All algorithms assume unlimited IO devices, so every process in the IO queue is decremented at the same time.
+    3) Any process in the IO queue is removed from any position in the queue as soon as the IO burst counter reaches 0.
