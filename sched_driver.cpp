@@ -1,7 +1,7 @@
 /**
 Joel Brigida
 COP4610-002
-Dr. Boijovie Furht
+Dr. Borijovie Furht
 Programming Term Project: Process Scheduler
 Description:
     This is the driver file for the CPU Process Scheduler.
