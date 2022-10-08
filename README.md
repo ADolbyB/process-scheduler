@@ -1,4 +1,4 @@
-# process-scheduler
+# Process Scheduler
 A C++ process scheduler project using predefined processes and queue structs 
 
 This Process Scheduler was built and runs on the Linux build of Code::Blocks v20.03 using g++ compiler and 
