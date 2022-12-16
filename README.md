@@ -44,3 +44,16 @@ Notes for all algorithms:
     1) All processes finishing CPU bursts from any queue are sent to the back of the IO queue, unless the process is finished.
     2) All algorithms assume unlimited IO devices, so every process in the IO queue is decremented at the same time.
     3) Any process in the IO queue is removed from any position in the queue as soon as the IO burst counter reaches 0.
+
+## FCFS Output Screenshot:
+![FCFS Output](./Documentation/Results_FCFS.png)
+
+## SJF Output Screenshot:
+![SJF Output](./Documentation/Results_SJF.png)
+
+## MLFQ Output Screenshot:
+![MLFQ Output](./Documentation/Results_MLFQ.png)
+
+## Status:
+
+![GitHub repo size](https://img.shields.io/github/repo-size/ADolbyB/process-scheduler?label=Repo%20Size&logo=Github)
