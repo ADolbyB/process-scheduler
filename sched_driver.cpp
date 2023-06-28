@@ -44,31 +44,35 @@ void Menu(void)
         cin >> choice;
 
         switch(choice)
-            {
-                case '1':
-                    cout << endl << "*** Running FCFS Algorithm ***" << endl << endl;
-                    FCFS();
-                    cout << endl << "*** End of FCFS Algorithm ***" << endl << endl;
-                    cout << endl;
-                    break;
-
-                case '2':
-                    cout << endl << "*** Running SJF Algorithm ***" << endl << endl;
-                    SJF();
-                    cout << endl << "*** End of SJF Algorithm ***" << endl << endl;
-                    cout << endl;
-                    break;
-
-                case '3':
-                    cout << endl << "*** Running MLFQ Algorithm ***" << endl << endl;
-                    MLFQ();
-                    cout << endl << "*** End of MLFQ Algorithm ***" << endl << endl;
-                    cout << endl;
-                    break;
-
-                default:
-                    cout << endl << "Goodbye!!" << endl << endl;
+        {
+            case '1':
+            {    cout << endl << "*** Running FCFS Algorithm ***" << endl << endl;
+                FCFS();
+                cout << endl << "*** End of FCFS Algorithm ***" << endl << endl;
+                cout << endl;
+                break;
             }
+            case '2':
+            {
+                cout << endl << "*** Running SJF Algorithm ***" << endl << endl;
+                SJF();
+                cout << endl << "*** End of SJF Algorithm ***" << endl << endl;
+                cout << endl;
+                break;
+            }
+            case '3':
+            {
+                cout << endl << "*** Running MLFQ Algorithm ***" << endl << endl;
+                MLFQ();
+                cout << endl << "*** End of MLFQ Algorithm ***" << endl << endl;
+                cout << endl;
+                break;
+            }
+            default:
+            {
+                cout << endl << "Goodbye!!" << endl << endl;
+            }
+        }
     } while(choice == '1' || choice == '2' || choice == '3');
 
 }
@@ -77,11 +81,11 @@ void FCFS(void) // First Come First Served Algorithm
 {
 
     Process P1("P1"), P2("P2"), P3("P3"), P4("P4"),
-        P5("P5"), P6("P6"), P7("P7"), P8("P8");                 // Declare 8 processes as linked lists
+        P5("P5"), P6("P6"), P7("P7"), P8("P8");                     // Declare 8 processes as linked lists
 
-    queue Ready("Ready", 'F'), IO_wait("IO_wait", 'I');         // Declare 2 queues as ready and IO queues
+    queue Ready("Ready", 'F'), IO_wait("IO_wait", 'I');             // Declare 2 queues as ready and IO queues
 
-    P1.Make_process("p1.txt", "P1");                            // Build each process into a linked list
+    P1.Make_process("p1.txt", "P1");                                // Build each process into a linked list
     P2.Make_process("p2.txt", "P2");
     P3.Make_process("p3.txt", "P3");
     P4.Make_process("p4.txt", "P4");
@@ -92,7 +96,7 @@ void FCFS(void) // First Come First Served Algorithm
 
     cout << endl;
 
-    P1.Print_proc_nodes("P1");                                  // debug: check if Processes were built properly
+    P1.Print_proc_nodes("P1");                                      // debug: check if Processes were built properly
     P2.Print_proc_nodes("P2");
     P3.Print_proc_nodes("P3");
     P4.Print_proc_nodes("P4");
@@ -101,11 +105,11 @@ void FCFS(void) // First Come First Served Algorithm
     P7.Print_proc_nodes("P7");
     P8.Print_proc_nodes("P8");
 
-    Ready.Print_ready_IO("Ready_Queue");                        // debug: Ready list should be EMPTY now
+    Ready.Print_ready_IO("Ready_Queue");                            // debug: Ready list should be EMPTY now
 
-    IO_wait.Print_ready_IO("IO_Queue");                         // debug: IO_Wait list should be EMPTY now.
+    IO_wait.Print_ready_IO("IO_Queue");                             // debug: IO_Wait list should be EMPTY now.
 
-    Ready.FCFS_SJF_add_to_queue(IO_wait, P1);                   // load initial processes into ready queue at TIME = 0
+    Ready.FCFS_SJF_add_to_queue(IO_wait, P1);                       // load initial processes into ready queue at TIME = 0
     Ready.FCFS_SJF_add_to_queue(IO_wait, P2);
     Ready.FCFS_SJF_add_to_queue(IO_wait, P3);
     Ready.FCFS_SJF_add_to_queue(IO_wait, P4);
@@ -116,9 +120,9 @@ void FCFS(void) // First Come First Served Algorithm
 
     cout << endl;
 
-    Ready.Print_ready_IO("Ready_Queue");                        // debug: should be 8 processes initially loaded into the Ready Queue
+    Ready.Print_ready_IO("Ready_Queue");                            // debug: should be 8 processes initially loaded into the Ready Queue
 
-    P1.Print_proc_nodes("P1");                                  // debug: Each node should be missing the 1st CPU burst node
+    P1.Print_proc_nodes("P1");                                      // debug: Each node should be missing the 1st CPU burst node
     P2.Print_proc_nodes("P2");
     P3.Print_proc_nodes("P3");
     P4.Print_proc_nodes("P4");
@@ -130,11 +134,11 @@ void FCFS(void) // First Come First Served Algorithm
     cout << endl;
 
     while (!(Ready.Empty() && IO_wait.Empty()))
-        {
-            Ready.FCFS_SJF_CPU_queue_timer(IO_wait, P1, P2, P3, P4, P5, P6, P7, P8);
-            Ready.Print_ready_IO("Ready_For_loop");
-            IO_wait.Print_ready_IO("IO_For_Loop");
-        }
+    {
+        Ready.FCFS_SJF_CPU_queue_timer(IO_wait, P1, P2, P3, P4, P5, P6, P7, P8);
+        Ready.Print_ready_IO("Ready_For_loop");
+        IO_wait.Print_ready_IO("IO_For_Loop");
+    }
 
 
     P1.Print_proc_nodes("P1_post_scheduler");
@@ -158,11 +162,11 @@ void SJF(void)  // Shortest Job 1st Algorithm
 {
 
     Process P1("P1"), P2("P2"), P3("P3"), P4("P4"),
-        P5("P5"), P6("P6"), P7("P7"), P8("P8");                 // Declare 8 processes as linked lists
+        P5("P5"), P6("P6"), P7("P7"), P8("P8");                     // Declare 8 processes as linked lists
 
-    queue Ready("Ready", 'S'), IO_wait("IO_wait", 'I');         // Declare 2 queues as ready and IO queues
+    queue Ready("Ready", 'S'), IO_wait("IO_wait", 'I');             // Declare 2 queues as ready and IO queues
 
-    P1.Make_process("p1.txt", "P1");                            // Build each process into a linked list
+    P1.Make_process("p1.txt", "P1");                                // Build each process into a linked list
     P2.Make_process("p2.txt", "P2");
     P3.Make_process("p3.txt", "P3");
     P4.Make_process("p4.txt", "P4");
@@ -173,7 +177,7 @@ void SJF(void)  // Shortest Job 1st Algorithm
 
     cout << endl;
 
-    P1.Print_proc_nodes("P1");                                  // debug: check if Processes were built properly
+    P1.Print_proc_nodes("P1");                                      // debug: check if Processes were built properly
     P2.Print_proc_nodes("P2");
     P3.Print_proc_nodes("P3");
     P4.Print_proc_nodes("P4");
@@ -182,13 +186,13 @@ void SJF(void)  // Shortest Job 1st Algorithm
     P7.Print_proc_nodes("P7");
     P8.Print_proc_nodes("P8");
 
-    Ready.Print_ready_IO("Ready_Queue");                        // debug: Ready list should be EMPTY now
+    Ready.Print_ready_IO("Ready_Queue");                            // debug: Ready list should be EMPTY now
 
-    IO_wait.Print_ready_IO("IO_Queue");                         // debug: IO_Wait list should be EMPTY now.
+    IO_wait.Print_ready_IO("IO_Queue");                             // debug: IO_Wait list should be EMPTY now.
 
-    Ready.FCFS_SJF_add_to_queue(IO_wait, P4);                   // load initial processes into ready queue at TIME = 0
-    Ready.FCFS_SJF_add_to_queue(IO_wait, P2);                   // initial load done manually in order of shortest CPU burst 1st
-    Ready.FCFS_SJF_add_to_queue(IO_wait, P8);                   // P4 = 3, P2 = 4, P8 = 4, P1 = 5, P3 = 8, P6 = 11, P7 = 14, P5 = 16
+    Ready.FCFS_SJF_add_to_queue(IO_wait, P4);                       // load initial processes into ready queue at TIME = 0
+    Ready.FCFS_SJF_add_to_queue(IO_wait, P2);                       // initial load done manually in order of shortest CPU burst 1st
+    Ready.FCFS_SJF_add_to_queue(IO_wait, P8);                       // P4 = 3, P2 = 4, P8 = 4, P1 = 5, P3 = 8, P6 = 11, P7 = 14, P5 = 16
     Ready.FCFS_SJF_add_to_queue(IO_wait, P1);
     Ready.FCFS_SJF_add_to_queue(IO_wait, P3);
     Ready.FCFS_SJF_add_to_queue(IO_wait, P6);
@@ -197,9 +201,9 @@ void SJF(void)  // Shortest Job 1st Algorithm
 
     cout << endl;
 
-    Ready.Print_ready_IO("Ready_Queue");                        // debug: should be 8 processes initially loaded into the Ready Queue
+    Ready.Print_ready_IO("Ready_Queue");                            // debug: should be 8 processes initially loaded into the Ready Queue
 
-    P1.Print_proc_nodes("P1");                                  // debug: Each node should be missing the 1st CPU burst node
+    P1.Print_proc_nodes("P1");                                      // debug: Each node should be missing the 1st CPU burst node
     P2.Print_proc_nodes("P2");
     P3.Print_proc_nodes("P3");
     P4.Print_proc_nodes("P4");
@@ -269,7 +273,7 @@ void MLFQ(void)
 
     IO_wait.Print_ready_IO("IO_Queue");                             // debug: IO_Wait list should be EMPTY now.
 
-    Ready_1.MLFQ_add_to_ready1(IO_wait, P1);                              // load initial processes into ready queue at TIME = 0
+    Ready_1.MLFQ_add_to_ready1(IO_wait, P1);                        // load initial processes into ready queue at TIME = 0
     Ready_1.MLFQ_add_to_ready1(IO_wait, P2);
     Ready_1.MLFQ_add_to_ready1(IO_wait, P3);
     Ready_1.MLFQ_add_to_ready1(IO_wait, P4);
@@ -280,11 +284,11 @@ void MLFQ(void)
 
     cout << endl;
 
-    Ready_1.Print_ready_IO("Ready 1: RR-5");                    // debug: should be 8 processes initially loaded into the 1st Ready Queue
+    Ready_1.Print_ready_IO("Ready 1: RR-5");                        // debug: should be 8 processes initially loaded into the 1st Ready Queue
     Ready_2.Print_ready_IO("Ready 2: RR-10");
     Ready_3.Print_ready_IO("Ready 3: FCFS");
 
-    P1.Print_proc_nodes("P1");                                  // debug: Each node should be missing the 1st CPU burst node
+    P1.Print_proc_nodes("P1");                                      // debug: Each node should be missing the 1st CPU burst node
     P2.Print_proc_nodes("P2");
     P3.Print_proc_nodes("P3");
     P4.Print_proc_nodes("P4");
@@ -296,22 +300,22 @@ void MLFQ(void)
     cout << endl;
 
     while (!(Ready_1.Empty() && Ready_2.Empty() && Ready_3.Empty() && IO_wait.Empty()))
-        {
-            cout << endl << "*** TIME +1: NEW LOOP ITERATION***" << endl;
-            Ready_1.MLFQ_CPU_timer(IO_wait, Ready_2, Ready_3, P1, P2, P3, P4, P5, P6, P7, P8);
-            Ready_1.Print_ready_IO("Ready 1: RR-5");
-            Ready_2.Print_ready_IO("Ready 2: RR-10");
-            Ready_3.Print_ready_IO("Ready 3: FCFS");
-            IO_wait.Print_ready_IO("IO_For_Loop");
-//            P1.Print_proc_nodes("P1");
-//            P2.Print_proc_nodes("P2");
-//            P3.Print_proc_nodes("P3");
-//            P4.Print_proc_nodes("P4");
-//            P5.Print_proc_nodes("P5");
-//            P6.Print_proc_nodes("P6");
-//            P7.Print_proc_nodes("P7");
-//            P8.Print_proc_nodes("P8");
-        }
+    {
+        cout << endl << "*** TIME +1: NEW LOOP ITERATION***" << endl;
+        Ready_1.MLFQ_CPU_timer(IO_wait, Ready_2, Ready_3, P1, P2, P3, P4, P5, P6, P7, P8);
+        Ready_1.Print_ready_IO("Ready 1: RR-5");
+        Ready_2.Print_ready_IO("Ready 2: RR-10");
+        Ready_3.Print_ready_IO("Ready 3: FCFS");
+        IO_wait.Print_ready_IO("IO_For_Loop");
+        // P1.Print_proc_nodes("P1");
+        // P2.Print_proc_nodes("P2");
+        // P3.Print_proc_nodes("P3");
+        // P4.Print_proc_nodes("P4");
+        // P5.Print_proc_nodes("P5");
+        // P6.Print_proc_nodes("P6");
+        // P7.Print_proc_nodes("P7");
+        // P8.Print_proc_nodes("P8");
+    }
 
     P1.Print_proc_nodes("P1_post_scheduler");
     P2.Print_proc_nodes("P2_post_scheduler");
