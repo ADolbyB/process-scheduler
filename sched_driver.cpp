@@ -85,14 +85,14 @@ void FCFS(void) // First Come First Served Algorithm
 
     queue Ready("Ready", 'F'), IO_wait("IO_wait", 'I');             // Declare 2 queues as ready and IO queues
 
-    P1.Make_process("p1.txt", "P1");                                // Build each process into a linked list
-    P2.Make_process("p2.txt", "P2");
-    P3.Make_process("p3.txt", "P3");
-    P4.Make_process("p4.txt", "P4");
-    P5.Make_process("p5.txt", "P5");
-    P6.Make_process("p6.txt", "P6");
-    P7.Make_process("p7.txt", "P7");
-    P8.Make_process("p8.txt", "P8");
+    P1.Make_process("./Processes/p1.txt", "P1");                    // Build each process into a linked list
+    P2.Make_process("./Processes/p2.txt", "P2");
+    P3.Make_process("./Processes/p3.txt", "P3");
+    P4.Make_process("./Processes/p4.txt", "P4");
+    P5.Make_process("./Processes/p5.txt", "P5");
+    P6.Make_process("./Processes/p6.txt", "P6");
+    P7.Make_process("./Processes/p7.txt", "P7");
+    P8.Make_process("./Processes/p8.txt", "P8");
 
     cout << endl;
 
