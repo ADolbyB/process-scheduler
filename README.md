@@ -21,7 +21,12 @@ Notes for all algorithms:
 2) All algorithms assume unlimited IO devices, so every process in the IO queue is decremented at the same time.
 3) Any process in the IO queue is removed from any position in the queue as soon as the IO burst counter reaches 0. This is because of the "unlimited IO devices" ideal condition.
 
-This project provides three different scheduling algorithms, which are selectable by the user.
+UPDATE: to use this project with GDB (GNU DeBugger), compile the `sched_driver` binary executable:
+    
+1) Bash: `g++ -g -Wall -Werror *.cpp *.h -o sched_driver`
+2) Launch with GDB: `gdb ./sched_driver`
+
+This project provides three different scheduling algorithms, which are selectable by the user:
 
 1) `FCFS`: First Come First Served:
     - This algorithm uses a single Ready Queue and a single IO Queue.
