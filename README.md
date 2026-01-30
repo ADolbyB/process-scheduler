@@ -1,7 +1,7 @@
+<div align="center">
+
 # CPU Process Scheduler
 ### Operating Systems Scheduling Algorithm Implementation
-
-<div align="center">
 
 [![Stars](https://img.shields.io/github/stars/ADolbyB/process-scheduler?style=for-the-badge&logo=github)](https://github.com/ADolbyB/process-scheduler/stargazers)
 [![Forks](https://img.shields.io/github/forks/ADolbyB/process-scheduler?style=for-the-badge&logo=github)](https://github.com/ADolbyB/process-scheduler/network/members)
