@@ -1,0 +1,141 @@
+name: C++ Build & Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  # JOB 1: Build the C++ project in both Debug and Release configurations
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Build two configurations in parallel: Debug and Release
+        build_type: [Debug, Release]
+    
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # Step 2: Install build dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake
+      
+      # Step 3: Configure CMake
+      - name: Configure CMake
+        run: |
+          mkdir -p build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+      
+      # Step 4: Build the project (Use all available CPU cores)
+      - name: Build
+        run: |
+          cd build
+          make -j$(nproc)
+      
+      # Step 6: Rename binary to include build type (Debug/Release)
+      - name: Rename binary
+        run: |
+          cd build
+          if [ -f process-scheduler ]; then
+            mv process-scheduler process-scheduler-${{ matrix.build_type }}
+          fi
+      
+      # Step 7: Upload the compiled binary as an artifact
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.build_type }}
+          path: build/process-scheduler-${{ matrix.build_type }}
+          retention-days: 1
+
+  # JOB 2: Create the GitHub release with binaries and documentation
+  create-release:
+    needs: build  # Wait for both Debug and Release builds to complete
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # Step 2: Download all compiled binaries from the build job
+      - name: Download all binaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: binary-*
+          path: binaries
+          merge-multiple: true
+      
+      # Step 3: List downloaded files for debugging
+      - name: List downloaded binaries
+        run: |
+          echo "Downloaded binaries:"
+          ls -lh binaries/
+      
+      # Step 4: Create ZIP archive of documentation
+      - name: Create documentation archive
+        run: |
+          if [ -d "Documentation" ] && [ "$(ls -A Documentation/*.pdf 2>/dev/null)" ]; then
+            zip -j documentation.zip Documentation/*.pdf
+          else
+            echo "No PDF documentation found in Documentation/ folder"
+          fi
+      
+      # Step 5: Create the GitHub release with all assets
+      - name: Create Release & Upload Assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Process Scheduler ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          body: |
+            🚀 **Process Scheduler - Release ${{ github.ref_name }}**
+            
+            ## 📦 Downloads
+            
+            **Pre-compiled Binaries:**
+            - `process-scheduler-Release` - Optimized production build
+            - `process-scheduler-Debug` - Debug build with symbols for development
+            
+            **Documentation:**
+            - `documentation.zip` - Project documentation (PDFs)
+            
+            ## 🔧 Build Information
+            
+            - **Compiler:** GCC (Ubuntu)
+            - **Build Date:** ${{ github.event.head_commit.timestamp }}
+            - **Commit:** ${{ github.sha }}
+            
+            ## 📝 Usage
+            
+            ```bash
+            # Download the Release binary
+            chmod +x process-scheduler-Release
+            ./process-scheduler-Release
+            ```
+            
+            ## 🐛 Debug Build
+            
+            For debugging or development, use the Debug binary:
+            ```bash
+            chmod +x process-scheduler-Debug
+            gdb ./process-scheduler-Debug
+            ```
+            
+            See the full source code and build instructions in the repository.
+          files: |
+            binaries/process-scheduler-Debug
+            binaries/process-scheduler-Release
+            documentation.zip
+          fail_on_unmatched_files: true  # don't produce incomplete releases
