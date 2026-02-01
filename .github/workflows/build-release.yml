@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -26,30 +27,34 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake
-      
-      # Step 3: Configure CMake
-      - name: Configure CMake
+          sudo apt-get install -y build-essential g++ make
+
+      # Step 3: Build using Makefile
+      - name: Build ${{ matrix.build_type }}
         run: |
-          mkdir -p build
-          cd build
-          cmake .. -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-      
-      # Step 4: Build the project (Use all available CPU cores)
-      - name: Build
-        run: |
-          cd build
-          make -j$(nproc)
-      
-      # Step 6: Rename binary to include build type (Debug/Release)
-      - name: Rename binary
-        run: |
-          cd build
-          if [ -f process-scheduler ]; then
-            mv process-scheduler process-scheduler-${{ matrix.build_type }}
+          if [ "${{ matrix.build_type }}" == "Debug" ]; then
+            make clean
+            make CXXFLAGS="-g -O0 -Wall -Wextra -std=c++11"
+            # Rename the binary to include build type
+            if [ -f process-scheduler ]; then
+              mv process-scheduler process-scheduler-Debug
+            fi
+          else
+            make clean
+            make CXXFLAGS="-O3 -DNDEBUG -std=c++11"
+            if [ -f process-scheduler ]; then
+              mv process-scheduler process-scheduler-Release
+            fi
           fi
       
-      # Step 7: Upload the compiled binary as an artifact
+      # Step 4: Verify binary was created
+      - name: Verify binary
+        run: |
+          ls -lh process-scheduler-${{ matrix.build_type }}
+          file process-scheduler-${{ matrix.build_type }}
+
+      
+      # Step 5: Upload the compiled binary as an artifact
       - name: Upload binary artifact
         uses: actions/upload-artifact@v4
         with:
@@ -86,6 +91,7 @@ jobs:
         run: |
           if [ -d "Documentation" ] && [ "$(ls -A Documentation/*.pdf 2>/dev/null)" ]; then
             zip -j documentation.zip Documentation/*.pdf
+            echo "Documentation ZIP created"
           else
             echo "No PDF documentation found in Documentation/ folder"
           fi
@@ -100,40 +106,49 @@ jobs:
           prerelease: false
           generate_release_notes: true
           body: |
-            🚀 **Process Scheduler - Release ${{ github.ref_name }}**
+            🚀 **CPU Process Scheduler Simulator - Release ${{ github.ref_name }}**
+            
+            A C++ implementation of various CPU scheduling algorithms including FCFS, SJF, Priority, and Round Robin.
             
             ## 📦 Downloads
             
-            **Pre-compiled Binaries:**
-            - `process-scheduler-Release` - Optimized production build
+            **Pre-compiled Binaries (Linux x64):**
+            - `process-scheduler-Release` - Optimized production build (recommended)
             - `process-scheduler-Debug` - Debug build with symbols for development
             
             **Documentation:**
-            - `documentation.zip` - Project documentation (PDFs)
+            - `documentation.zip` - Project documentation (if available)
             
             ## 🔧 Build Information
-            
-            - **Compiler:** GCC (Ubuntu)
+            - **Compiler:** g++ (Ubuntu)
+            - **Standard:** C++11
             - **Build Date:** ${{ github.event.head_commit.timestamp }}
             - **Commit:** ${{ github.sha }}
             
             ## 📝 Usage
-            
             ```bash
-            # Download the Release binary
-            chmod +x process-scheduler-Release
-            ./process-scheduler-Release
+            # Download and run the Release binary
+            chmod +x processScheduler-Release
+            ./processScheduler-Release
             ```
             
             ## 🐛 Debug Build
             
-            For debugging or development, use the Debug binary:
+            For debugging or development:
             ```bash
-            chmod +x process-scheduler-Debug
-            gdb ./process-scheduler-Debug
+            chmod +x processScheduler-Debug
+            gdb ./processScheduler-Debug
             ```
             
-            See the full source code and build instructions in the repository.
+            ## 🛠️ Building from Source
+            ```bash
+            git clone https://github.com/ADolbyB/process-scheduler.git
+            cd process-scheduler
+            make
+            ./processScheduler
+            ```
+            
+            See the full source code and detailed instructions in the repository README.
           files: |
             binaries/process-scheduler-Debug
             binaries/process-scheduler-Release
