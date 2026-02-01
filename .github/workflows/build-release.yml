@@ -101,7 +101,7 @@ jobs:
           name: Process Scheduler ${{ github.ref_name }}
           draft: false
           prerelease: false
-          generate_release_notes: true
+          generate_release_notes: false
           body: |
             🚀 **CPU Process Scheduler Simulator - Release ${{ github.ref_name }}**
             
@@ -119,7 +119,6 @@ jobs:
             ## 🔧 Build Information
             - **Compiler:** g++ (Ubuntu)
             - **Standard:** C++11
-            - **Build Date:** ${{ github.event.head_commit.timestamp }}
             - **Commit:** ${{ github.sha }}
             
             ## 📝 Usage
@@ -144,14 +143,13 @@ jobs:
             ```
             
             Compile with debug symbols
-            ```
+            ```bash
             g++ -g -std=c++11 -Wall -Werror *.cpp *.h -o sched_driver
             ```
 
             Launch with GDB
-            ```
+            ```bash
             gdb ./sched_driver
-            ./processScheduler
             ```
             
             See the full source code and detailed instructions in the repository README.
