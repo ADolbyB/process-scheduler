@@ -5,7 +5,7 @@
 
 [![Stars](https://img.shields.io/github/stars/ADolbyB/process-scheduler?style=for-the-badge&logo=github)](https://github.com/ADolbyB/process-scheduler/stargazers)
 [![Forks](https://img.shields.io/github/forks/ADolbyB/process-scheduler?style=for-the-badge&logo=github)](https://github.com/ADolbyB/process-scheduler/network/members)
-[![Repo Size](https://img.shields.io/github/repo-size/ADolbyB/process-scheduler?label=Repo%20Size&logo=Github&style=for-the-badge)](https://github.com/ADolbyB/process-scheduler)
+[![Build](https://img.shields.io/github/actions/workflow/status/ADolbyB/process-scheduler/build-release.yml?style=for-the-badge&logo=github&logoColor=white&label=BUILD%20%26%20RELEASE)](https://github.com/ADolbyB/process-scheduler/actions/workflows/build-release.yml)
 [![Last Commit](https://img.shields.io/github/last-commit/ADolbyB/process-scheduler?style=for-the-badge&logo=github)](https://github.com/ADolbyB/process-scheduler/commits/main)
 
 **Operating Systems Course Project - Grade: 98/100**
@@ -266,14 +266,13 @@ gdb ./sched_driver
 ```bash
 $ ./sched_driver
 
-=== CPU Process Scheduler ===
-Select Scheduling Algorithm:
-1. FCFS (First Come First Served)
-2. SJF  (Shortest Job First)
-3. MLFQ (Multi-Level Feedback Queue)
-4. Exit
+=>> Process Scheduler <<=
+*** Make a Selection: ***
+1) Run FCFS Algorithm
+2) Run SJF Algorithm
+3) Run MLFQ Algorithm
+4) Exit
 
-Enter choice (1-4): 
 ```
 
 Select algorithm by number and observe:
