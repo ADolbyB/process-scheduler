@@ -33,14 +33,12 @@ jobs:
       - name: Build ${{ matrix.build_type }}
         run: |
           if [ "${{ matrix.build_type }}" == "Debug" ]; then
-            make clean
             make CXXFLAGS="-g -O0 -Wall -Wextra -std=c++11"
             # Rename the binary to include build type
             if [ -f process-scheduler ]; then
               mv process-scheduler process-scheduler-Debug
             fi
           else
-            make clean
             make CXXFLAGS="-O3 -DNDEBUG -std=c++11"
             if [ -f process-scheduler ]; then
               mv process-scheduler process-scheduler-Release
@@ -59,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: binary-${{ matrix.build_type }}
-          path: build/process-scheduler-${{ matrix.build_type }}
+          path: process-scheduler-${{ matrix.build_type }}
           retention-days: 1
 
   # JOB 2: Create the GitHub release with binaries and documentation
