@@ -29,19 +29,18 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential g++ make
 
-      # Step 3: Build using Makefile
+      # Step 3: Compile using g++
       - name: Build ${{ matrix.build_type }}
         run: |
           if [ "${{ matrix.build_type }}" == "Debug" ]; then
-            make CXXFLAGS="-g -O0 -Wall -Wextra -std=c++11"
-            # Rename the binary to include build type
+            g++ -g -std=c++11 -Wall -Werror *.cpp *.h -o process-scheduler-debug
             if [ -f process-scheduler ]; then
-              mv process-scheduler process-scheduler-Debug
+              mv process-scheduler process-scheduler-debug
             fi
           else
-            make CXXFLAGS="-O3 -DNDEBUG -std=c++11"
+            g++ -O3 -DNDEBUG -std=c++11 *.cpp *.h -o process-scheduler-release
             if [ -f process-scheduler ]; then
-              mv process-scheduler process-scheduler-Release
+              mv process-scheduler process-scheduler-release
             fi
           fi
       
@@ -111,11 +110,11 @@ jobs:
             ## 📦 Downloads
             
             **Pre-compiled Binaries (Linux x64):**
-            - `process-scheduler-Release` - Optimized production build (recommended)
-            - `process-scheduler-Debug` - Debug build with symbols for development
+            - `process-scheduler-release` - Optimized production build (recommended)
+            - `process-scheduler-debug` - Debug build with symbols for development
             
             **Documentation:**
-            - `documentation.zip` - Project documentation (if available)
+            - `documentation.zip` - Project documentation (PDFs)
             
             ## 🔧 Build Information
             - **Compiler:** g++ (Ubuntu)
@@ -126,29 +125,38 @@ jobs:
             ## 📝 Usage
             ```bash
             # Download and run the Release binary
-            chmod +x processScheduler-Release
-            ./processScheduler-Release
+            chmod +x process-scheduler-release
+            ./process-scheduler-release
             ```
             
             ## 🐛 Debug Build
             
             For debugging or development:
             ```bash
-            chmod +x processScheduler-Debug
-            gdb ./processScheduler-Debug
+            chmod +x process-scheduler-debug
+            gdb ./process-scheduler-debug
             ```
             
             ## 🛠️ Building from Source
             ```bash
             git clone https://github.com/ADolbyB/process-scheduler.git
             cd process-scheduler
-            make
+            ```
+            
+            Compile with debug symbols
+            ```
+            g++ -g -std=c++11 -Wall -Werror *.cpp *.h -o sched_driver
+            ```
+
+            Launch with GDB
+            ```
+            gdb ./sched_driver
             ./processScheduler
             ```
             
             See the full source code and detailed instructions in the repository README.
           files: |
-            binaries/process-scheduler-Debug
-            binaries/process-scheduler-Release
+            binaries/process-scheduler-debug
+            binaries/process-scheduler-release
             documentation.zip
           fail_on_unmatched_files: true  # don't produce incomplete releases
