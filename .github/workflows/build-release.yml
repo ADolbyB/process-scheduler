@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         # Build two configurations in parallel: Debug and Release
-        build_type: [Debug, Release]
+        build_type: [debug, release]
     
     steps:
       # Step 1: Check out the repository code
@@ -32,7 +32,7 @@ jobs:
       # Step 3: Compile using g++
       - name: Build ${{ matrix.build_type }}
         run: |
-          if [ "${{ matrix.build_type }}" == "Debug" ]; then
+          if [ "${{ matrix.build_type }}" == "debug" ]; then
             g++ -g -std=c++11 -Wall -Werror *.cpp *.h -o process-scheduler-debug
             if [ -f process-scheduler ]; then
               mv process-scheduler process-scheduler-debug
