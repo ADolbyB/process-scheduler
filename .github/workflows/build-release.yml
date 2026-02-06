@@ -12,7 +12,7 @@ permissions:
 jobs:
   # JOB 1: Build the C++ project in both Debug and Release configurations
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         # Build two configurations in parallel: Debug and Release
@@ -62,7 +62,7 @@ jobs:
   # JOB 2: Create the GitHub release with binaries and documentation
   create-release:
     needs: build  # Wait for both Debug and Release builds to complete
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     
     steps:
       # Step 1: Check out the repository
@@ -82,7 +82,12 @@ jobs:
         run: |
           echo "Downloaded binaries:"
           ls -lh binaries/
-      
+
+      # Step 4: Release Notes
+      - name: Prepare release notes
+        run: |
+          sed 's/{VERSION}/${{ github.ref_name }}/g' .github/release-notes.md > release-body.md
+
       # Step 4: Create ZIP archive of documentation
       - name: Create documentation archive
         run: |
@@ -97,62 +102,7 @@ jobs:
       - name: Create Release & Upload Assets
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Process Scheduler ${{ github.ref_name }}
-          draft: false
-          prerelease: false
-          generate_release_notes: false
-          body: |
-            🚀 **CPU Process Scheduler Simulator - Release ${{ github.ref_name }}**
-            
-            A C++ implementation of various CPU scheduling algorithms including FCFS, SJF, Priority, and Round Robin.
-            
-            ## 📦 Downloads
-            
-            **Pre-compiled Binaries (Linux x64):**
-            - `process-scheduler-release` - Optimized production build (recommended)
-            - `process-scheduler-debug` - Debug build with symbols for development
-            
-            **Documentation:**
-            - `documentation.zip` - Project documentation (PDFs)
-            
-            ## 🔧 Build Information
-            - **Compiler:** g++ (Ubuntu)
-            - **Standard:** C++11
-            - **Commit:** ${{ github.sha }}
-            
-            ## 📝 Usage
-            ```bash
-            # Download and run the Release binary
-            chmod +x process-scheduler-release
-            ./process-scheduler-release
-            ```
-            
-            ## 🐛 Debug Build
-            
-            For debugging or development:
-            ```bash
-            chmod +x process-scheduler-debug
-            gdb ./process-scheduler-debug
-            ```
-            
-            ## 🛠️ Building from Source
-            ```bash
-            git clone https://github.com/ADolbyB/process-scheduler.git
-            cd process-scheduler
-            ```
-            
-            Compile with debug symbols
-            ```bash
-            g++ -g -std=c++11 -Wall -Werror *.cpp *.h -o sched_driver
-            ```
-
-            Launch with GDB
-            ```bash
-            gdb ./sched_driver
-            ```
-            
-            See the full source code and detailed instructions in the repository README.
+          body_path: release-body.md
           files: |
             binaries/process-scheduler-debug
             binaries/process-scheduler-release
