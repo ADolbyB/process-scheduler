@@ -1,12 +1,12 @@
 # 🚀 **CPU Process Scheduler Simulator - Release {VERSION}**
 
-A C++ implementation of various CPU scheduling algorithms including FCFS, SJF, Priority, and Round Robin.
+A C++ implementation of various CPU scheduling algorithms including FCFS, SJF and MLFQ Priority.
 
 ## 📦 Downloads
 
-**Pre-compiled Binaries (Linux x64):**
-- `process-scheduler-release` - Optimized production build (recommended)
-- `process-scheduler-debug` - Debug build with symbols for development
+**Pre-compiled Tarballs (Linux x64):**
+- `process-scheduler-release.tar.gz` - Optimized production build (recommended)
+- `process-scheduler-debug.tar.gz` - Debug build with symbols for development
 
 **Documentation:**
 - `documentation.zip` - Project documentation (PDFs)
@@ -16,18 +16,26 @@ A C++ implementation of various CPU scheduling algorithms including FCFS, SJF, P
 - **Standard:** C++11
 
 ## 📝 Usage
+- **Linux:**
 ```bash
-# Download and run the Release binary
-chmod +x process-scheduler-release
-./process-scheduler-release
+# Download and extract
+tar -xzf process-scheduler-release.tar.gz
+cd process-scheduler-release
+
+# Run the scheduler
+./process-scheduler
 ```
 
 ## 🐛 Debug Build
 
 For debugging or development:
 ```bash
-chmod +x process-scheduler-debug
-gdb ./process-scheduler-debug
+# Download and extract
+tar -xzf process-scheduler-debug.tar.gz
+cd process-scheduler-debug
+
+# Run the scheduler
+gdb ./process-scheduler
 ```
 
 ## 🛠️ Building from Source
