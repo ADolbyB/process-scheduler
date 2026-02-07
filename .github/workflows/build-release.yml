@@ -50,16 +50,34 @@ jobs:
           ls -lh process-scheduler-${{ matrix.build_type }}
           file process-scheduler-${{ matrix.build_type }}
 
+      # Step 5: Create tarball with binary and Processes folder
+      - name: Create tarball
+        run: |
+          # Create a temporary directory for packaging
+          mkdir -p package-${{ matrix.build_type }}
+          
+          # Copy the binary (rename to remove the build type suffix for user convenience)
+          cp process-scheduler-${{ matrix.build_type }} package-${{ matrix.build_type }}/process-scheduler
+          
+          # Copy the Processes folder
+          cp -r Processes package-${{ matrix.build_type }}/
+          
+          # Create the tarball
+          tar -czf process-scheduler-${{ matrix.build_type }}.tar.gz -C package-${{ matrix.build_type }} .
+          
+          # Verify tarball contents
+          echo "Tarball contents:"
+          tar -tzf process-scheduler-${{ matrix.build_type }}.tar.gz
       
-      # Step 5: Upload the compiled binary as an artifact
-      - name: Upload binary artifact
+      # Step 6: Upload the tarball as an artifact
+      - name: Upload tarball artifact
         uses: actions/upload-artifact@v4
         with:
-          name: binary-${{ matrix.build_type }}
-          path: process-scheduler-${{ matrix.build_type }}
+          name: tarball-${{ matrix.build_type }}
+          path: process-scheduler-${{ matrix.build_type }}.tar.gz
           retention-days: 1
 
-  # JOB 2: Create the GitHub release with binaries and documentation
+  # JOB 2: Create the GitHub release with tarballs and documentation
   create-release:
     needs: build  # Wait for both Debug and Release builds to complete
     runs-on: ubuntu-22.04
@@ -69,26 +87,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       
-      # Step 2: Download all compiled binaries from the build job
-      - name: Download all binaries
+      # Step 2: Download all tarballs from the build job
+      - name: Download all tarballs
         uses: actions/download-artifact@v4
         with:
-          pattern: binary-*
-          path: binaries
+          pattern: tarball-*
+          path: tarballs
           merge-multiple: true
       
       # Step 3: List downloaded files for debugging
-      - name: List downloaded binaries
+      - name: List downloaded tarballs
         run: |
-          echo "Downloaded binaries:"
-          ls -lh binaries/
+          echo "Downloaded tarballs:"
+          ls -lh tarballs/
 
       # Step 4: Release Notes
       - name: Prepare release notes
         run: |
           sed 's/{VERSION}/${{ github.ref_name }}/g' .github/release-notes.md > release-body.md
 
-      # Step 4: Create ZIP archive of documentation
+      # Step 5: Create ZIP archive of documentation
       - name: Create documentation archive
         run: |
           if [ -d "Documentation" ] && [ "$(ls -A Documentation/*.pdf 2>/dev/null)" ]; then
@@ -98,13 +116,13 @@ jobs:
             echo "No PDF documentation found in Documentation/ folder"
           fi
       
-      # Step 5: Create the GitHub release with all assets
+      # Step 6: Create the GitHub release with all assets
       - name: Create Release & Upload Assets
         uses: softprops/action-gh-release@v2
         with:
           body_path: release-body.md
           files: |
-            binaries/process-scheduler-debug
-            binaries/process-scheduler-release
+            tarballs/process-scheduler-debug.tar.gz
+            tarballs/process-scheduler-release.tar.gz
             documentation.zip
           fail_on_unmatched_files: true  # don't produce incomplete releases
